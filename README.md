@@ -40,84 +40,151 @@ The **Restaurant Management System** is a terminal-based application that simula
    - File a complaint if needed.
 
 ### Example Interaction
+```
 Welcome to the Restaurant!
 
 --- Menu ---
+1. Pasta - $10.00
+2. Pizza - $12.00
+3. Salad - $8.00
+4. Done ordering
+Select an option (1-4): 2
+Selected: Pizza, Price: $12.00
 
-Pasta - $10.00
-Pizza - $12.00
-Salad - $8.00
-Done ordering Select an option (1-4): 1 Selected: Pasta, Price: $10.00
 --- Customization Options ---
+1. Add Extra Cheese - $1.50
+2. Add Extra Sauce - $0.75
+3. Add Extra Toppings - $2.00
+4. No more customizations
+Select an option (1-4): 1
+Current Dish: Pizza + Extra Cheese, Price: $13.50
 
-Add Extra Cheese - $1.50
-Add Extra Sauce - $0.75
-Add Extra Toppings - $2.00
-No more customizations Select an option (1-4): 1 Current Dish: Pasta + Extra Cheese, Price: $11.50
---- Discount Options ---
-
-No Discount
-Student Discount (10%)
-Senior Discount (15%) Select a discount option (1-3): 2 Total after discount: $10.35
-vbnet
-Copy code
+Select a discount option (1-3): 2
+Total after discount: $12.15
+...
+```
 
 ## Project Structure
 
 The project is organized into the following structure:
 
-restaurant-management-system/ │ ├── src/ │ ├── Dish.java # Base class for Dish │ ├── DishFactory.java # Factory class for creating dishes │ ├── DishDecorator.java # Base Decorator class for Dish │ ├── ExtraCheeseDecorator.java # Concrete decorator for cheese │ ├── ExtraSauceDecorator.java # Concrete decorator for sauce │ ├── ExtraToppingsDecorator.java # Concrete decorator for toppings │ ├── Order.java # Order class for managing dishes │ ├── PaymentGateway.java # Payment interface │ ├── PaymentAdapter.java # Adapter for external payment gateway │ ├── Command.java # Command interface for order actions │ ├── PlaceOrderCommand.java # Command to place an order │ ├── OrderContext.java # Context for handling order states │ ├── DiscountStrategy.java # Strategy interface for discounts │ ├── StudentDiscount.java # Concrete strategy for student discount │ ├── SeniorDiscount.java # Concrete strategy for senior discount │ ├── NoDiscount.java # Concrete strategy for no discount │ ├── ComplaintHandler.java # Handler interface for complaints │ ├── MinorComplaintHandler.java # Concrete handler for minor complaints │ ├── MajorComplaintHandler.java # Concrete handler for major complaints │ ├── CriticalComplaintHandler.java # Concrete handler for critical complaints │ └── KitchenNotifier.java # Observer for notifying kitchen │ ├── README.md # Project description and documentation ├── LICENSE # License information └── pom.xml # Maven project configuration
+```
+Restaurant Management System
 
-csharp
-Copy code
+src
+|
+|-- Adapter
+|   |-- ExternalPaymentProcessor.java
+|   |-- PaymentAdapter.java
+|   |-- PaymentGateway.java
+|
+|-- Builder
+|   |-- CustomDishBuilder.java
+|
+|-- ChainOfResponsibility
+|   |-- ComplaintHandler.java
+|   |-- CriticalComplaintHandler.java
+|   |-- MajorComplaintHandler.java
+|   |-- MinorComplaintHandler.java
+|
+|-- Command
+|   |-- Command.java
+|   |-- PlaceOrderCommand.java
+|
+|-- Composite
+|   |-- Order.java
+|
+|-- Decorator
+|   |-- DishDecorator.java
+|   |-- ExtraCheeseDecorator.java
+|   |-- ExtraSauceDecorator.java
+|   |-- ExtraToppingsDecorator.java
+|
+|-- Facade
+|   |-- KitchenFacade.java
+|
+|-- Factory
+|   |-- Dish.java
+|   |--DishFactory.java
+|   |--Pasta.java
+|   |--Pizza.java
+|
+|-- Observer
+|   |-- KitchenNotifier.java
+|   |-- Observer.java
+|   |-- Waiter.java
+|
+|-- Singleton
+|   |--Database.java
+|
+|-- State
+|   |-- InProgressState.java
+|   |-- NewOrderState.java
+|   |-- OrderContext.java
+|   |-- OrderState.java
+|   |-- ReadyState.java
+|
+|-- Strategy
+|   |-- DiscountStrategy.java
+|   |-- NoDiscount.java
+|   |-- StudentDiscount.java
+|
+|-- Main.java
+```
 
 ## Project Diagram
 
 Below is a simplified diagram of the project structure and the relationships between major components:
 
-sql
-Copy code
-             +--------------------------+
-             |       Dish (Base)        |
-             +--------------------------+
-                        |
-                        |
-            +--------------------------+
-            |      DishDecorator        |
-            +--------------------------+
-            |       Concrete Decorators |
-            +--------------------------+
-                        |
-                        v
-              +----------------------+
-              |    ExtraCheese        |
-              |    ExtraSauce         |
-              |    ExtraToppings      |
-              +----------------------+
-                        |
-      +------------------------------------------+
-      |            Order Command               |
-      +------------------------------------------+
-                        |
-                        v
-                 +------------+
-                 |    Order   |
-                 +------------+
-                        |
-                        v
-            +----------------------+
-            | Payment (Strategy)    |
-            +----------------------+
-                        |
-                        v
-               +-------------------+
-               | Payment Adapter   |
-               +-------------------+
-yaml
-Copy code
+```
+                 +--------------------------+
+                 |       Dish (Base)        |
+                 +--------------------------+
+                            |
+                            |
+                +--------------------------+
+                |      DishDecorator       |
+                +--------------------------+
+                |    Concrete Decorators   |
+                +--------------------------+
+                            |
+                            v
+                  +----------------------+
+                  |    ExtraCheese       |
+                  |    ExtraSauce        |
+                  |    ExtraToppings     |
+                  +----------------------+
+                            |
+                            v
+                      +------------+
+                      |    Order   |
+                      +------------+
+                            |
+                            v
+                 +-----------------------+
+                 | Payment (Strategy)    |
+                 +-----------------------+
+                            |
+                            v
+                    +-------------------+
+                    | Payment Adapter   |
+                    +-------------------+
+                            |
+                            v
+                 +--------------------------+
+                 | ExternalPaymentProcessor |
+                 +--------------------------+
+                            |
+                            v
+                 +-------------------------+
+                 |      Order Command      |
+                 +-------------------------+
+                            |
+                            v
+                      +------------+
+                      | PlaceOrder |
+                      +------------+
 
+```
 ---
 
-### License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
